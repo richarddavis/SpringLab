@@ -100,10 +100,10 @@ public class ControlPanel extends Component {
 	
 	public void checkBoxes(float[] values) {
 		if (values[0] == 1) {
-			// Tell piston collection to turn on force display
+			// Tell spring collection to turn on force display
 			this.c.displayForces(false);
 		} else {
-			// Tell piston collection to turn off force display
+			// Tell spring collection to turn off force display
 			this.c.displayForces(true);
 		}
 		if (values[1] == 1) {
@@ -125,9 +125,9 @@ public class ControlPanel extends Component {
 //		if (buttonValue == 1) {
 //			this.c.displayForces(true);
 //			this.r2.activate(0);
-//			// Tell piston collection to turn on force display
+//			// Tell spring collection to turn on force display
 //		} else if (buttonValue == 0) {
-//			// Tell piston collection to turn off force display
+//			// Tell spring collection to turn off force display
 //			this.c.displayForces(false);
 //			this.r2.activate(1);
 //		} else {

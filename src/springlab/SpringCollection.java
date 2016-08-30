@@ -1,16 +1,12 @@
 package springlab;
 
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-
-import processing.core.PApplet;
-import shiffman.box2d.Box2DProcessing;
 
 public class SpringCollection {
 	
 	ArrayList<Spring> springs;
-	Spring activePiston; 
+	Spring activeSpring; 
 	ResearchData rData;
 	Hapkit hapkit;
 	
@@ -25,7 +21,7 @@ public class SpringCollection {
 	}
 	
 	public float getActiveForce() {
-		return this.activePiston.getForce();
+		return this.activeSpring.getForce();
 	}
 	
 	public void displayForces(boolean display_on) {
@@ -49,13 +45,13 @@ public class SpringCollection {
 	}
 	
 	public void setActive(Spring p){
-		if(activePiston == null){
-			activePiston = p;
-			activePiston.getHand().swapIcon();
+		if(activeSpring == null){
+			activeSpring = p;
+			activeSpring.getHand().swapIcon();
 		}else{
-			activePiston.getHand().swapIcon();
+			activeSpring.getHand().swapIcon();
 			p.hand.swapIcon();
-			activePiston = p;
+			activeSpring = p;
 		}
 		if(rData.getInputMode() == ResearchData.HAPKIT_MODE){
 			System.out.println("Setting Hapkit k-constant to:");
@@ -66,17 +62,17 @@ public class SpringCollection {
 		}
 	}
 	
-	public void updateActivePiston(int mx, int my, boolean pressed, Hapkit hapkit) {
+	public void updateActiveSpring(int mx, int my, boolean pressed, Hapkit hapkit) {
 		for (Spring p : springs) {
 			if (p != null && p.getHand().contains(mx, my)) {
 				this.setActive(p);
-				rData.logEvent(p.getK(), -1, "SWITCHING BETWEEN PISTONS");
+				rData.logEvent(p.getK(), -1, "SWITCHING BETWEEN SPRINGS");
 				break;
 			}
 		}
 		
 		if(rData.getInputMode() == ResearchData.MOUSE_MODE){
-			this.activePiston.mouseUpdate(mx, my, pressed);
+			this.activeSpring.mouseUpdate(mx, my, pressed);
 		}else{
 			// Why was the following line included?
 			//this.activeSpring.hapkitUpdate(my);
@@ -85,17 +81,17 @@ public class SpringCollection {
 	
 	private void destroyOldHapkitJoints() {
 		for (Spring p : springs) {
-			if(p != null && !p.equals(activePiston)){
+			if(p != null && !p.equals(activeSpring)){
 				p.hand.destroy();
 			}
 		}
 	}
 
-	public void updateActivePistonPosition(double hapkitPos) {
-		int currentPos = (int) this.activePiston.getX()+this.activePiston.originalLen+10;
+	public void updateActiveSpringPosition(double hapkitPos) {
+		int currentPos = (int) this.activeSpring.getX()+this.activeSpring.originalLen+10;
 		int newPos = (int) (currentPos + hapkitPos);
 		//System.out.println(hapkitPos);
-		this.activePiston.hapkitUpdate(newPos);	
+		this.activeSpring.hapkitUpdate(newPos);	
 	}
 
 	public void delete(int value) {

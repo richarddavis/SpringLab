@@ -7,6 +7,7 @@ import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import processing.core.PApplet;
 import processing.core.PFont;
+import processing.event.Event;
 import processing.serial.Serial;
 
 public class Main extends PApplet {
@@ -19,14 +20,14 @@ public class Main extends PApplet {
 	int inputMode;
 
 	//Container properties, dynamic generated from overall width, height
-	int width = 650;
-	int height = 700;
-	int spacing = (int) (width*0.02);
+	int width = 1000;
+	int height = 550;
+	int spacing = 10;
 	
 	//component widths
-	int leftColWidth = (int) (width*0.22);
-	int centerColWidth = (int) (width*0.45);
-	int rightColWidth = (int) (width*0.22)+30;
+//	int centerColWidth = (int) (width*0.45);
+	int leftColWidth = (int) (width*0.35);
+	int rightColWidth = (int) (width*0.60);
 	int singleColWidth = width - (2 * spacing);
 	
 	//designPalette coordinates
@@ -36,16 +37,22 @@ public class Main extends PApplet {
 //	int canvasH = height-(spacing*2);
 	
 	// Canvas coordinates
-	int canvasX = spacing;
+	int canvasX = spacing * 2 + leftColWidth;
 	int canvasY = spacing;
-	int canvasW = singleColWidth;
-	int canvasH = 550;
+	int canvasW = rightColWidth;
+	int canvasH = height - 20;
 	
 	// Control panel coordinates
 	int controlPanelX = spacing;
-	int controlPanelY = canvasH + (spacing * 2);
-	int controlPanelW = singleColWidth;
-	int controlPanelH = height - canvasH - (spacing * 3);
+	int controlPanelY = (int)((double)height * 0.75) + 24;
+	int controlPanelW = leftColWidth;
+	int controlPanelH = (int)((double)height * 0.18) + 5;
+	
+	// Graph coordinates
+	int graphPanelX = spacing;
+	int graphPanelY = spacing;
+	int graphPanelW = leftColWidth;
+	int graphPanelH = (int)((double)height * 0.75);
 	
 	//forceFeedbackOption coordinates
 //	int fFOX = spacing;
@@ -87,6 +94,7 @@ public class Main extends PApplet {
 	Hapkit hapkit;
 	Canvas designCanvas;
 	ControlPanel forceFeedbackOption;
+	GraphPanel graphPanel;
 //	PhysicsPlayground physicsPlayground;
 //	HapkitFeedbackSettings hapkitFeedbackPanel;
 	//ExperimentSettings expSettings;
@@ -137,8 +145,8 @@ public class Main extends PApplet {
 //		participantId = Integer.parseInt(pID);
 		
 		participantId = 0;
-		//inputMode = HAPKIT_MODE;
-		inputMode = MOUSE_MODE;
+		inputMode = HAPKIT_MODE;
+//		inputMode = MOUSE_MODE;
 		researchData = new ResearchData(participantId, inputMode);
 		
 		cp5 = new ControlP5(this);
@@ -174,6 +182,7 @@ public class Main extends PApplet {
 		
 		designCanvas = new Canvas(this, cp5, canvasX, canvasY, canvasW, canvasH, hapkit, researchData);
 		forceFeedbackOption = new ControlPanel(this, cp5, controlPanelX, controlPanelY, controlPanelW, controlPanelH, designCanvas);
+		graphPanel = new GraphPanel(this, cp5, graphPanelX, graphPanelY, graphPanelW, graphPanelH, designCanvas);
 //		physicsPlayground = new PhysicsPlayground(this, cp5, designCanvas, controlPanelX, controlPanelY, controlPanelW, controlPanelH);
 		//participantSelection = new ParticipantSelection(this, cp5, pSX, pSY, pSW, pSH, participantId);
 //		forceFeedbackOption = new ForceDisplaySettings(this, cp5, fFOX, fFOY, fFOW, fFOH,  designCanvas);
@@ -191,6 +200,7 @@ public class Main extends PApplet {
 //		components.add(springFactory);
 //		components.add(physicsPlayground);
 		components.add(forceFeedbackOption);
+		components.add(graphPanel);
 	}
 
 	public void draw() {
@@ -210,14 +220,32 @@ public class Main extends PApplet {
 	
 	public void mouseReleased() {
 		designCanvas.mouseReleased();
+		graphPanel.clearDots();
 	}
-
-	public void serialEvent(Serial p){
-		try {
-			hapkit.serialEvent(p);
-		} 
-		catch(RuntimeException e) {
-		}
+	
+	public void keyPressed() {
+		graphPanel.keyPressed(key);
+//		int keyIndex = -1;
+//		if (key >= 'A' && key <= 'Z') {
+//			keyIndex = key - 'A';
+//		} else if (key >= 'a' && key <= 'z') {
+//			keyIndex = key - 'a';
+//		}
+//		if (keyIndex == -1) {
+//			// If it's not a letter key, clear the screen
+//			System.out.println("Not a letter.");
+//		} else { 
+//		    System.out.println("It's a letter.");
+//		    System.out.println(keyIndex);
+//		}
+//	}
+//
+//	public void serialEvent(Serial p){
+//		try {
+//			hapkit.serialEvent(p);
+//		} 
+//		catch(RuntimeException e) {
+//		}
     }
 	
 	/**

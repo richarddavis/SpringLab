@@ -28,15 +28,14 @@ public class Spring {
 	Hand hand;
 	Box2DProcessing box2d;
 
-//	int piston_img_w = 231;
-//	int piston_img_h = 80;
+//	int spring_img_w = 231;
+//	int spring_img_h = 80;
 
 	// BOX2D
 	DistanceJointDef djd;
 	DistanceJoint dj;
 
 	Anchor anchor;
-//	PImage piston_img;
 	PImage spring_img;
 
 	public Spring(int _x, int _y, int _k, int _length, int _width, String label, PApplet p, Box2DProcessing box2d,
@@ -58,7 +57,6 @@ public class Spring {
 		this.anchor = new Anchor(this.x, this.y, parent, box2d);
 
 		// Import photo
-//		this.piston_img = parent.loadImage("piston.png");
 		this.spring_img = parent.loadImage(image_name);
 
 		// Define the joint
@@ -71,7 +69,7 @@ public class Spring {
 		djd.collideConnected = false;
 		djd.length = box2d.scalarPixelsToWorld(this.originalLen);
 
-		// Some stuff about how strong and bouncy the piston should be
+		// Some stuff about how strong and bouncy the spring should be
 		// djd.maxForce = (float) (1000.0 * hand.body.m_mass);
 		djd.frequencyHz = (float) ((1 / (2 * Math.PI)) * (Math.sqrt(this.k / this.hand.body.m_mass)));
 		djd.dampingRatio = 0.001f;
@@ -100,7 +98,7 @@ public class Spring {
 			 this.currentLen = (int) (v1.x - v2.x);
 			// int width = 30;
 			// spring_img.resize(width, this.spring_img.height);
-			// parent.image(piston_img, v1.x, v1.y);
+			// parent.image(spring_img, v1.x, v1.y);
 //			 parent.image(spring_img, v2.x + this.spring_img.width/2, this.y, this.spring_img.width, this.spring_img.height);
 			 parent.image(spring_img, v2.x + this.currentLen/2, this.y, this.currentLen, this.width);
 			 
@@ -111,7 +109,7 @@ public class Spring {
 
 			// parent.pushMatrix();
 //			parent.imageMode(PConstants.CENTER);
-//			parent.image(piston_img, v2.x + this.piston_img.width/2, this.y, this.piston_img.width, this.piston_img.height);
+//			parent.image(spring_img, v2.x + this.spring_img.width/2, this.y, this.spring_img.width, this.spring_img.height);
 			// parent.popMatrix();
 
 			// (float) (this.y + (0.5*(v2.y-v1.y)))
@@ -225,10 +223,10 @@ public class Spring {
 	public void displayForce(boolean on) {
 		if (on == true) {
 			this.display_forces = true;
-			System.out.println("Turning on force display under piston.");
+			System.out.println("Turning on force display under spring.");
 		} else if (on == false) {
 			this.display_forces = false;
-			System.out.println("Turning off force display under piston.");
+			System.out.println("Turning off force display under spring.");
 		}
 	}
 
