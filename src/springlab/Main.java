@@ -238,14 +238,14 @@ public class Main extends PApplet {
 //		    System.out.println("It's a letter.");
 //		    System.out.println(keyIndex);
 //		}
-//	}
-//
-//	public void serialEvent(Serial p){
-//		try {
-//			hapkit.serialEvent(p);
-//		} 
-//		catch(RuntimeException e) {
-//		}
+	}
+
+	public void serialEvent(Serial p){
+		try {
+			hapkit.serialEvent(p);
+		} 
+		catch(RuntimeException e) {
+		}
     }
 	
 	/**
