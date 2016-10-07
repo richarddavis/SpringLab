@@ -1,5 +1,6 @@
 package springlab;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import controlP5.CheckBox;
@@ -58,11 +59,11 @@ public class GraphPanel extends Component {
 		this.p.image(axes_img, this.w / 2 + 10, this.h / 2 + 10, this.w, this.h);
 //		this.p.image(stiff_img, x+50, y+150, (int) (stiff_img.width), (int) (stiff_img.height));
 		this.activeSpring = this.sc.activeSpring;
-		float xpos = activeSpring.getDisplacement();
-		float ypos = activeSpring.getForce();
+		BigDecimal xpos = activeSpring.getDisplacement();
+		BigDecimal ypos = activeSpring.getForce();
 		
-		dotx = this.p.map(xpos, (float)-0.5, (float)0.5, (float)this.x, (float)this.w);
-		doty = this.p.map(ypos, (float)-30, (float)30, (float)this.h, (float)this.y);
+		dotx = this.p.map(xpos.floatValue(), (float)-0.5, (float)0.5, (float)this.x, (float)this.w);
+		doty = this.p.map(ypos.floatValue(), (float)-30, (float)30, (float)this.h, (float)this.y);
 		
 		this.p.fill(255, 0, 0);
 		for (int i=0; i < xdot.size(); i++) {
@@ -75,7 +76,7 @@ public class GraphPanel extends Component {
 	public void keyPressed(int key) {
 		if (key == 32) {
 			// Space key was pressed
-			xdot.add(dotx);
+			xdot.add(dotx); // These names are confusing!
 			ydot.add(doty);
 		}
 	}

@@ -1,6 +1,7 @@
 package springlab;
 
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class SpringCollection {
@@ -20,7 +21,7 @@ public class SpringCollection {
 		return springs.add(p);
 	}
 	
-	public float getActiveForce() {
+	public BigDecimal getActiveForce() {
 		return this.activeSpring.getForce();
 	}
 	

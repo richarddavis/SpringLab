@@ -14,7 +14,9 @@ import processing.core.PImage;
 import shiffman.box2d.Box2DProcessing;
 
 public class Canvas extends Component {
-
+	
+	int lab_number;
+	
 	static Box2DProcessing box2d;
 	PApplet parent;
 	Hapkit hapkit;
@@ -62,11 +64,10 @@ public class Canvas extends Component {
 
 	static int Y1, Y2, Y3, Y4, Y5, X_ALL;
 	
-	int lab_number = 1;
-	
-	public Canvas(Main main, ControlP5 cp5, int _x, int _y, int _w, int _h, Hapkit _hapkit, ResearchData rData) {
+	public Canvas(Main main, ControlP5 cp5, int _x, int _y, int _w, int _h, Hapkit _hapkit, ResearchData rData, int lab_number) {
 		
 		super(_x,_y,_w,_h);
+		this.lab_number = lab_number;
 		
 		if (lab_number == 1) {
 			Y1 = y+50;
@@ -81,6 +82,13 @@ public class Canvas extends Component {
 			Y4 = y+350;
 			Y5 = y+450;
 			X_ALL = this.x + this.w - 100;
+		} else if (lab_number == 3) {
+			Y1 = y + 50;
+			X_ALL = this.x + this.w - 100;
+		} else if (lab_number == 4) {
+			Y1 = y + 50;
+			Y2 = y + 150;
+			X_ALL = this.x + this.w - 100;
 		}
 		
 		this.hapkit = _hapkit;
@@ -88,6 +96,10 @@ public class Canvas extends Component {
 			this.numSprings = 4;
 		} else if (lab_number == 2) {
 			this.numSprings = 5;
+		} else if (lab_number == 3) {
+			this.numSprings = 1;
+		} else if (lab_number == 4) {
+			this.numSprings = 2;
 		}
 		this.rData = rData;
 		
@@ -112,17 +124,17 @@ public class Canvas extends Component {
 		
 		box2d = new Box2DProcessing(parent);
 		box2d.createWorld();
-		box2d.setScaleFactor(400); // 500 pixels is 1 meter
+		box2d.setScaleFactor(180); // 500 pixels is 1 meter
 		box2d.setGravity(0, 0);
 		
 		// This prevents dynamic bodies from sticking to static ones
 		org.jbox2d.common.Settings.velocityThreshold = 0.2f;
 		
 		if (lab_number == 1) {
-			s1 = new Spring(X_ALL, Y1, 25, 270, 55, "Spring A", this.parent, box2d, rData, "spring_red.png");
-			s2 = new Spring(X_ALL, Y2, 25, 170, 25, "Spring B", this.parent, box2d, rData, "spring_blue.png");
-			s3 = new Spring(X_ALL, Y3, 55, 200, 15, "Spring C", this.parent, box2d, rData, "spring_gray.png");
-			s4 = new Spring(X_ALL, Y4, 55, 250, 50, "Spring D", this.parent, box2d, rData, "spring_yellow.png");
+			s1 = new Spring(X_ALL, Y1, 35, 270, 55, "Spring A", this.parent, box2d, rData, "spring_red.png");
+			s2 = new Spring(X_ALL, Y2, 35, 170, 25, "Spring B", this.parent, box2d, rData, "spring_blue.png");
+			s3 = new Spring(X_ALL, Y3, 90, 200, 15, "Spring C", this.parent, box2d, rData, "spring_gray.png");
+			s4 = new Spring(X_ALL, Y4, 90, 250, 50, "Spring D", this.parent, box2d, rData, "spring_yellow.png");
 			sc = new SpringCollection(rData, hapkit);
 			sc.add(s1);
 			sc.add(s2);
@@ -130,17 +142,29 @@ public class Canvas extends Component {
 			sc.add(s4);
 			sc.setActive(s1);
 		} else if (lab_number == 2) {
-			s1 = new Spring(X_ALL, Y1, 55, 150, 35, "Spring A", this.parent, box2d, rData, "spring_purple.png");
-			s2 = new Spring(X_ALL, Y2, 25, 250, 20, "Spring B", this.parent, box2d, rData, "spring_green.png");
-			s3 = new Spring(X_ALL, Y3, 55, 150, 45, "Spring C", this.parent, box2d, rData, "spring_yellow.png");
-			s4 = new Spring(X_ALL, Y4, 15, 225, 50, "Spring D", this.parent, box2d, rData, "spring_gray.png");
-			s5 = new Spring(X_ALL, Y5, 55, 150, 15, "Spring E", this.parent, box2d, rData, "spring_yellow.png");
+			s1 = new Spring(X_ALL, Y1, 15, 150, 35, "Spring A", this.parent, box2d, rData, "spring_purple.png");
+			s2 = new Spring(X_ALL, Y2, 45, 250, 20, "Spring B", this.parent, box2d, rData, "spring_green.png");
+			s3 = new Spring(X_ALL, Y3, 50, 150, 45, "Spring C", this.parent, box2d, rData, "spring_yellow.png");
+			s4 = new Spring(X_ALL, Y4, 55, 225, 50, "Spring D", this.parent, box2d, rData, "spring_gray.png");
+			s5 = new Spring(X_ALL, Y5, 100, 150, 15, "Spring E", this.parent, box2d, rData, "spring_yellow.png");
 			sc = new SpringCollection(rData, hapkit);
 			sc.add(s1);
 			sc.add(s2);
 			sc.add(s3);
 			sc.add(s4);
 			sc.add(s5);
+			sc.setActive(s1);
+		} else if (lab_number == 3) {
+			s1 = new Spring(X_ALL, Y1, 50, 250, 50, "Spring A", this.parent, box2d, rData, "spring_purple.png");
+			sc = new SpringCollection(rData, hapkit);
+			sc.add(s1);
+			sc.setActive(s1);
+		} else if (lab_number == 4) {
+			s1 = new Spring(X_ALL, Y1, 15, 250, 50, "Spring A", this.parent, box2d, rData, "spring_yellow.png");
+			s2 = new Spring(X_ALL, Y2, 80, 250, 50, "Spring A", this.parent, box2d, rData, "spring_green.png");
+			sc = new SpringCollection(rData, hapkit);
+			sc.add(s1);
+			sc.add(s2);
 			sc.setActive(s1);
 		}
 		
@@ -219,6 +243,12 @@ public class Canvas extends Component {
 		} else if (lab_number == 2) {
 			parent.imageMode(PConstants.CORNER);
 			parent.image(wood_plank_img_01, X_ALL, Y1-25, wood_plank_img_01.width/2, Y5-Y1+40);
+		} else if (lab_number == 3) {
+			parent.imageMode(PConstants.CORNER);
+			parent.image(wood_plank_img_01, X_ALL, Y1-25, wood_plank_img_01.width/2, Y1+40);
+		} else if (lab_number == 4) {
+			parent.imageMode(PConstants.CORNER);
+			parent.image(wood_plank_img_01, X_ALL, Y1-25, wood_plank_img_01.width/2, Y2-Y1+50);
 		}
 		
 		sc.draw();
@@ -262,8 +292,6 @@ public class Canvas extends Component {
 			parent.fill(120);
 			parent.textSize(18);
 			parent.text("Strong Spring Co.", bottom_x+10, bottom_y+20);
-		} else if (lab_number == 2) {
-			// Nothing for now
 		}
 		
 	}

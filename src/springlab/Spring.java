@@ -1,6 +1,7 @@
 package springlab;
 
 import java.awt.Font;
+import java.math.BigDecimal;
 
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.joints.DistanceJoint;
@@ -130,8 +131,9 @@ public class Spring {
 				parent.fill(120);
 				parent.pushMatrix();
 				parent.textFont(p2);
-				float d = this.getDisplacement();
-				parent.text("X: " + String.format("%.2f", d), dfx + 20, dfy + 20);
+				BigDecimal d = this.getDisplacement();
+				d = d.multiply(new BigDecimal(10.0));
+				parent.text("Displacement: " + String.format("%.2f cm", d), dfx, dfy);
 				parent.setFont(p1);
 				parent.textSize(18);
 				parent.popMatrix();
@@ -141,7 +143,9 @@ public class Spring {
 				parent.fill(100);
 				parent.pushMatrix();
 				parent.textFont(p2);
-				parent.text("Force: " + String.format("%.2f", this.getForce()), dfx, dfy);
+				BigDecimal f = this.getForce();
+				f = f.multiply(new BigDecimal(10.0));
+				parent.text("Force: " + String.format("%.2f", f), dfx, dfy + 20);
 				parent.setFont(p1);
 				parent.textSize(18);
 				parent.popMatrix();
@@ -152,34 +156,41 @@ public class Spring {
 		this.hand.draw();
 	}
 
-	public float getLength() {
-		Vec2 v1 = new Vec2(0, 0);
-		dj.getAnchorA(v1);
-		Vec2 v2 = new Vec2(0, 0);
-		dj.getAnchorB(v2);
-
-		// Convert them to screen coordinates
-		// v1 = box2d.coordWorldToPixels(v1);
-		// v2 = box2d.coordWorldToPixels(v2);
-
-		return (v2.sub(v1)).length();
-	}
+//	public BigDecimal getLength() {
+//		Vec2 v1 = new Vec2(0, 0);
+//		dj.getAnchorA(v1);
+//		Vec2 v2 = new Vec2(0, 0);
+//		dj.getAnchorB(v2);
+//
+//		// Convert them to screen coordinates
+//		// v1 = box2d.coordWorldToPixels(v1);
+//		// v2 = box2d.coordWorldToPixels(v2);
+//		float rawLen = (v2.sub(v1)).length();
+//		BigDecimal roundLen = new BigDecimal(rawLen).setScale(2, BigDecimal.ROUND_HALF_UP);
+//		
+//		return roundLen;
+//	}
 	
-	public float getDisplacement() {
+	public BigDecimal getDisplacement() {
 		Vec2 v1 = new Vec2(0, 0);
 		dj.getAnchorA(v1);
 		Vec2 v2 = new Vec2(0, 0);
 		dj.getAnchorB(v2);
 		float newLength = (v2.sub(v1)).length();
-		return djd.length - newLength;
+		BigDecimal roundLen = new BigDecimal(newLength).setScale(2, BigDecimal.ROUND_HALF_UP);
+		BigDecimal startLen = new BigDecimal(djd.length).setScale(2, BigDecimal.ROUND_HALF_UP);
+		return startLen.subtract(roundLen);
 	}
 
 	public void setLength(int len_pixels) {
 		dj.setLength(box2d.scalarPixelsToWorld(len_pixels));
 	}
 
-	public float getForce() {
-		return (this.k * (dj.getLength() - this.getLength()));
+	public BigDecimal getForce() {
+		float disp = this.getDisplacement().floatValue();
+		float force = disp * this.k;
+		BigDecimal roundedForce = new BigDecimal(force).setScale(2,  BigDecimal.ROUND_HALF_UP);
+		return roundedForce;
 	}
 
 	public void setX(int x) {

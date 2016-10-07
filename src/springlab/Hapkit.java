@@ -39,7 +39,7 @@ public class Hapkit {
 		this.feedback_on = 1;
 		
 		// This delay is needed to ensure that the Hapkit is ready to receive the serial data.
-		this.p.delay(100);
+		this.p.delay(500);
 		this.writeToArduino();
 		
 	}
@@ -106,7 +106,7 @@ public class Hapkit {
 	
 	public int getForce() {
 		// Placeholder
-		return 10;
+		return 0;
 	}
 	
 	public void writeToArduino(){
@@ -167,7 +167,7 @@ public class Hapkit {
 			}
 			
 		}catch(Exception e){
-			this.p.println(e);
+			System.out.println(e);
 		}
 	}
 }

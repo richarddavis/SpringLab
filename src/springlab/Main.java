@@ -12,6 +12,11 @@ import processing.serial.Serial;
 
 public class Main extends PApplet {
 	
+	int lab_number = 4;
+	
+	boolean include_graph = false;
+	boolean include_ff = false;
+	
 //	static int HAND_BITS = 1;
 //	static int ANCHOR_BITS = 2;
 	static int MOUSE_MODE = 0;
@@ -21,7 +26,7 @@ public class Main extends PApplet {
 
 	//Container properties, dynamic generated from overall width, height
 	int width = 1000;
-	int height = 550;
+	int height = 300;
 	int spacing = 10;
 	
 	//component widths
@@ -122,6 +127,17 @@ public class Main extends PApplet {
 	}
 	
 	public void setup() {
+		if (this.lab_number == 3) {
+			this.height = 300;
+		} else if (this.lab_number == 4) {
+			this.height = 300;
+		}
+		if (include_ff == false) {
+			this.width -= this.leftColWidth;
+			this.leftColWidth = 0;
+			this.canvasX = spacing * 2 + leftColWidth;
+		}
+			
 		size(this.width, this.height);
 		//frame.setResizable(false);
 		background(255);
@@ -180,8 +196,10 @@ public class Main extends PApplet {
 			}
 		}
 		
-		designCanvas = new Canvas(this, cp5, canvasX, canvasY, canvasW, canvasH, hapkit, researchData);
-		forceFeedbackOption = new ControlPanel(this, cp5, controlPanelX, controlPanelY, controlPanelW, controlPanelH, designCanvas);
+		designCanvas = new Canvas(this, cp5, canvasX, canvasY, canvasW, canvasH, hapkit, researchData, lab_number);
+		if (include_ff == true) {
+			forceFeedbackOption = new ControlPanel(this, cp5, controlPanelX, controlPanelY, controlPanelW, controlPanelH, designCanvas);
+		}
 		graphPanel = new GraphPanel(this, cp5, graphPanelX, graphPanelY, graphPanelW, graphPanelH, designCanvas);
 //		physicsPlayground = new PhysicsPlayground(this, cp5, designCanvas, controlPanelX, controlPanelY, controlPanelW, controlPanelH);
 		//participantSelection = new ParticipantSelection(this, cp5, pSX, pSY, pSW, pSH, participantId);
@@ -199,8 +217,13 @@ public class Main extends PApplet {
 		//components.add(expSettings);
 //		components.add(springFactory);
 //		components.add(physicsPlayground);
-		components.add(forceFeedbackOption);
-		components.add(graphPanel);
+		if (include_ff == true) {
+			components.add(forceFeedbackOption);
+		}
+		
+		if (include_graph == true) {
+			components.add(graphPanel);
+		}
 	}
 
 	public void draw() {
